@@ -1,0 +1,20 @@
+.create-product-form{
+  position: absolute;
+  top: 100px;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  // background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .create-product-form--wrapper{
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 1px 1px 10px 1px rgba(0, 0, 0, 0.1);
+    padding: 30px 10px;
+    position: relative;
+
+  }
+}

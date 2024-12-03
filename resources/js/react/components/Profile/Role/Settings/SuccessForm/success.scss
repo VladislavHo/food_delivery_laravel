@@ -1,0 +1,27 @@
+.success--wrapper {
+  display: flex;
+  justify-content: center;
+  background-color: white;
+  border-radius: 20px;
+  box-shadow: 1px 1px 10px 1px rgba(0, 0, 0, 0.1);
+  padding: 30px 10px;
+  position: fixed;
+  opacity: 0;
+  top: calc(50px);
+  left: 50%;
+  transform: translate(-50%, -156%);
+  z-index: 99999;
+  transition: all 0.3s ease-in-out;
+  &.active {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+    transition: all 0.3s ease-in-out;
+  }
+  
+  p {
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 29px;
+    color: #1C274C;
+  }
+}

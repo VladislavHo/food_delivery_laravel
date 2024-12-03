@@ -1,0 +1,52 @@
+@import "../../styles/mixin.scss";
+
+.food {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100vh;
+
+  &--info {
+    h2 {
+      @include sectionTitle();
+    }
+
+    p {}
+
+    .btn-wrapper {
+      display: flex;
+      justify-content: center;
+      button{
+        @include buttonDefault(var(--blue));
+      }
+
+    }
+  }
+
+  .recomendation {
+    h1 {}
+
+    .recomendation--wrapper {
+      margin-bottom: 80px;
+
+      .swiper {
+
+        .swiper-wrapper {
+          .swiper-slide--info {
+            display: flex;
+            flex-direction: column;
+            height: 150px;
+            background-color: rgba(0, 0, 0, 0.437);
+            border-radius: 10px;
+            display: flex;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+          }
+        }
+      }
+
+    }
+  }
+}

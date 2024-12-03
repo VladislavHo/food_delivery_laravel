@@ -1,0 +1,112 @@
+.filter-w {
+  width: 100%;
+  // height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: space-between;
+  // align-items: center;
+
+  .filter--container {
+    width: 100%;
+    // height: 100%;
+    background-color: aliceblue;
+    border-radius: 0 0 50px 50px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+    padding: 40px 10px;
+
+    button.close {
+      position: absolute;
+      right: 0;
+      top: 0;
+    }
+
+    .city {
+      padding: 20px 0;
+      border-bottom: 2px solid rgba(98, 98, 98, 0.507);
+      label{
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        .input--field{
+          display: flex;
+          gap: 10px;
+          input{
+            padding: 5px 10px;
+          }
+          button{
+            padding: 5px 10px;
+            background-color: var(--green);
+            color: white;
+            border-radius: 10px;
+          }
+        }
+      }
+    }
+    .delivery {
+
+
+      border-bottom: 2px solid rgba(98, 98, 98, 0.507);
+      padding: 20px 0;
+
+      label {
+        display: flex;
+        gap: 10px;
+      }
+    }
+
+    .radius {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      border-bottom: 2px solid rgba(98, 98, 98, 0.507);
+      padding-top: 20px;
+      padding-bottom: 20px;
+
+      input[type="range"] {
+        width: 70%;
+        border: none;
+        outline: none;
+      }
+
+      input[type="number"] {
+        width: 100px;
+      }
+
+    }
+
+    .btn--wrapper {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      gap: 10px;
+      // justify-content: center;
+      padding-top: 20px;
+
+      button.btn-reset {
+        width: 80%;
+        margin: 10px;
+        padding: 10px;
+        border-radius: 10px;
+        background-color: var(--green);
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
+
+      button.btn-apply {
+        width: 80%;
+        margin: 10px;
+        padding: 10px;
+        border-radius: 10px;
+        background-color: var(--blue);
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
+    }
+  }
+
+
+}
