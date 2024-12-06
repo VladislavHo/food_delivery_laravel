@@ -11,6 +11,7 @@ export async function getUserByApi({ id }: { id: string }): Promise<any> {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
         'X-XSRF-TOKEN': getCookie('XSRF-TOKEN')!,
+        'Authorization': 'Bearer ' + localStorage.getItem('authToken'),
       },
     })
 
@@ -38,6 +39,7 @@ export async function getUsersByApi(): Promise<any> {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
         'X-XSRF-TOKEN': getCookie('XSRF-TOKEN')!,
+        'Authorization': 'Bearer ' + localStorage.getItem('authToken'),
       },
     });
 

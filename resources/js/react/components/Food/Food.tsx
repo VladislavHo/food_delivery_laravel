@@ -6,6 +6,7 @@ import Recomendation from '../Recomendation/Swiper';
 import './food.scss'
 import OrdersButton from '../Buttons/OrdersButton';
 import { createChatByApi } from '../../api/chat';
+import { checkedAuthByApi } from '../../api/profile';
 
 
 export default function Food() {
@@ -15,41 +16,42 @@ export default function Food() {
   const [foods, setFoods] = useState<any>([]);
   const [recomendation, setRecomendation] = useState<any>([]);
   const [seller, setSeller] = useState<any>();
-
+  const [isSeller, setIsSeller] = useState(false);
+  // const [userId, setUserId] = useState<any>();
   useEffect(() => {
     getFood()
-    getRecomendation()
 
+    // checkedAuth()
   }, [])
 
+  async function checkedAuth() {
 
+    await checkedAuthByApi().then((data) => {
+      setIsSeller(data.data.profile.user.id === seller?.id)
+    })
+
+  }
 
   async function getFood() {
     await getFoodByApi({ food_id: id }).then((data) => {
 
       if (data.status !== 200) return
 
+      console.log(data, 'data');
+      
       setSeller(data.seller)
       setFoods(data.data)
-
+      checkedAuth()
 
     })
   }
 
-  async function getRecomendation() {
-    try {
-      const response = await getFoodsByApi({ d: seller?.locations?.city, r: seller?.locations?.region, all: true })
-      if (response.status !== 200) return
-      setRecomendation(response.data)
-    } catch (error) {
-      console.log(error)
-    }
-  }
+
 
 
   async function buttonSubmitCreateChat({ friendId }: { friendId: number }) {
-    console.log(foods);
-    
+
+
 
     const response = await createChatByApi({ friendId });
 
@@ -61,6 +63,7 @@ export default function Food() {
 
   }
 
+
   return (
     <>
       <div className="food">
@@ -69,13 +72,16 @@ export default function Food() {
           <div className="food--info">
             <h2>{foods.title}</h2>
             <p>{foods.description}</p>
+            <p>{!!foods.delivery ? 'C доставкой' : 'Самовывоз'}</p>
             <a href={`/user/${seller?.id}`}>
-              {seller?.name!}
+              {seller?.first_name + ' ' + seller?.last_name}
             </a>
 
             <p>{seller?.locations?.city}</p>
             <div className="btn-wrapper">
-              <button onClick={() => buttonSubmitCreateChat({ friendId: foods.user_id })}>Заказать</button>
+              {isSeller && (
+                <button onClick={() => buttonSubmitCreateChat({ friendId: foods.user_id })}>Заказать</button>
+              )}
               {/* <OrdersButton text="Заказать" /> */}
             </div>
           </div>
@@ -83,14 +89,14 @@ export default function Food() {
 
 
 
-        {/* <div className="recomendation">
+        <div className="recomendation">
           <h3>Рядом с вами</h3>
           <div className="recomendation--wrapper">
             {
-              <Recomendation recomendation={recomendation} />
+              <Recomendation />
             }
           </div>
-        </div> */}
+        </div>
       </div>
     </>
   )

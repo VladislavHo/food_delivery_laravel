@@ -22,9 +22,8 @@ export default function Settings() {
       .then((data) => {
         if (data.status !== 200) {
           setIsLodaing(false)
-          return navigate('/login')
+          return navigate('/cards')
         }
-        console.log(data);
 
         setLocationData(data.data.profile.locations)
         setIsLodaing(false)
@@ -51,8 +50,11 @@ export default function Settings() {
             <div className="btn--wrapper">
               <button onClick={() => {
                 logoutByApi();
-                navigate('/login')
-
+                localStorage.removeItem('authToken');
+                localStorage.removeItem('id');
+                localStorage.removeItem('filter');
+                navigate('/cards')
+                window.location.reload();
               }} type="button">Выход</button>
             </div>
               

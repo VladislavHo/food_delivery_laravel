@@ -21,7 +21,7 @@ export default async function registerByApi({name, email, password, password_con
     if (!response.ok) {
       return { status: response.status, error: response.statusText };
     }
-
+    window.location.reload();
     // const data = await response.json();
     // console.log(data);
     

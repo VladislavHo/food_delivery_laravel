@@ -3,8 +3,8 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Log;
 
-use Illuminate\Support\Facades\Log;
 class ProfileController extends Controller
 {
     /**
@@ -15,7 +15,7 @@ class ProfileController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth:sanctum');
+        $this->middleware('auth:sanctum')->except(['index']);
     }
 
     /**
@@ -27,16 +27,19 @@ class ProfileController extends Controller
     public function index()
     {
         $profile = auth()->user();
+        Log::info( "PROFILE" . $profile);
+        // Проверяем, аутентифицирован ли пользователь
         if (!$profile) {
-            redirect('/login');
+            
             return response()->json(['message' => 'Unauthorized'], 401);
         }
+        redirect('/profile');
         return response()->json(['profile' => ['user' => $profile, 'locations' => $profile->locations]], 200);
     }
     public function profile()
     {
         $profile = auth()->user();
-
+        Log::info( "PROFILE" . $profile);
         // Проверяем, аутентифицирован ли пользователь
         if (!$profile) {
             redirect('/login');

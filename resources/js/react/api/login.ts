@@ -24,7 +24,7 @@ export default async function checkLoginByApi({ email, password, remember }: ILo
       return { status: response.status, error: 'Неверный логин или пароль' };
     }
 
-
+    window.location.reload();
 
 
     // const data = await response.json();

@@ -13,7 +13,7 @@ class LocationController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth')->except(['create']);
     }
 
     /**
@@ -23,7 +23,7 @@ class LocationController extends Controller
      */
     public function create(Request $request)
     {
-        Log::info($request->all());
+
 
         $request->validate([
             'location' => 'required|array',
@@ -38,7 +38,7 @@ class LocationController extends Controller
         $user = auth()->user();
 
         if (!$user) {
-            redirect('/login');
+            redirect('/cards');
             return response()->json([
                 'message' => 'Failed to create location',
                 'data' => null

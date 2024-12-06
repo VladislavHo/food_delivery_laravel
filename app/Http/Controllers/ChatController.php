@@ -16,7 +16,7 @@ class ChatController extends Controller
         $user = auth()->user();
 
         if (!$user) {
-            return redirect('/login');
+            return redirect('/cards');
         }
 
         $chats = Chat::where('sender_id', $user->id)
@@ -30,20 +30,23 @@ class ChatController extends Controller
             ]);
         }
 
+
         Log::info($chats);
 
 
         $chats = $chats->map(function ($chat) {
             $friendId = $chat->sender_id == auth()->user()->id ? $chat->receiver_id : $chat->sender_id;
             $friend = User::find($friendId);
-            $message = Message::where('chat_id', $chat->id)->first();
+            $message = Message::where('chat_id', $chat->id)->latest()->first();
             return [
                 'id' => $chat->id,
                 'friend_id' => $friendId,
-                'friend' => $friend->name,
-                'message' => $message ? $message->message : null
+                'friend' => $friend->first_name . ' ' . $friend->last_name,
+                'message' => $message ? $message->message : null,
+                'updated_at' => $message ? $message->updated_at : $chat->created_at
             ];
         });
+
 
         return response()->json([
             'message' => 'Chats retrieved successfully',
@@ -68,7 +71,7 @@ class ChatController extends Controller
             Log::info($chatID . ' chat id');
             return response()->json([
                 'chat_id' => $chatID->id,
-                'friend' => $friend->name   
+                'friend' => $friend->name
             ]);
         }
         $chat = Chat::create([

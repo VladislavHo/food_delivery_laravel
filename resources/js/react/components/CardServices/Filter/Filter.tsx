@@ -17,7 +17,7 @@ export default function Filter(
       getOrders: any
     }) {
 
-  console.log(foodsData);
+
 
   return (
     <div className='filter-w'>
@@ -38,11 +38,11 @@ export default function Filter(
 
         </div>
 
-        {!!foodsData.user && !!foodsData.location.length && (
+        {!!foodsData?.user && !!foodsData.location.length && (
           <div className="delivery">
             <label>
               <p>С доставкой?</p>
-              <input type="checkbox" checked={valueFields.d} onChange={(e) => {
+              <input type="checkbox" checked={!!localStorage.getItem('filter') ? JSON.parse(localStorage.getItem('filter')!).d : valueFields.d} onChange={(e) => {
                 setValueFields({ ...valueFields, all: false, d: e.target.checked })
                 localStorage.getItem('filter') && localStorage.removeItem('filter')
                 localStorage.setItem('filter', JSON.stringify({ ...valueFields, all: false, d: e.target.checked }))
@@ -53,7 +53,7 @@ export default function Filter(
         )}
 
 
-        {!!foodsData.user && !!foodsData.location.length && (
+        {!!foodsData?.user && !!foodsData.location.length && (
           <div className="radius">
             <p>Рядом с вами</p>
 
@@ -82,7 +82,7 @@ export default function Filter(
             </div>
           </div>
         )}
-        {!!foodsData.user && !!foodsData.location.length && (
+        {!!foodsData?.user && !!foodsData.location.length && (
           <div className="btn--wrapper">
             <button className='btn-reset' onClick={() => {
               setValueFields({ d: false, r: 200, all: true })

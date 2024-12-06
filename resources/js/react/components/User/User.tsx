@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { getUserByApi } from "../../api/users";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Spinner from "../Spiner/Spiner";
 import Card from "../Card/Card";
 
@@ -9,7 +9,7 @@ export default function User() {
   const navigate = useNavigate();
   const [userData, setUserData] = useState<any>();
   const [loading, setLoading] = useState(true);
-  const id = window.location.pathname.split('/').pop();
+  const { id } = useParams();
 
   useEffect(() => {
     getUser()
@@ -59,7 +59,7 @@ export default function User() {
                 />
               </div>
               <div className="text-center mt-2">
-                <h2 className="font-semibold">{userData.user?.name}</h2>
+                <h2 className="font-semibold">{userData.user?.first_name} {userData.user?.last_name}</h2>
               </div>
 
 

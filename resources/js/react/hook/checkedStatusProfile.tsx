@@ -1,5 +1,5 @@
 export default function checkedStatusProfile() {
-  if (localStorage.getItem('user') === null) {
+  if (localStorage.getItem('id') === null) {
     
     return false
   } else {

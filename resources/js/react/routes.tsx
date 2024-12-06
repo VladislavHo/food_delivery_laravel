@@ -14,6 +14,7 @@ import Active from './components/Active/Active';
 import Message from './components/Message/Message';
 import CreateProduct from './components/Profile/Role/CreateProduct/CreateProduct';
 import EditProduct from './components/Profile/Role/EditProduct/EditProduct';
+import Test from './components/Test/Test';
 
 
 const router = createBrowserRouter([
@@ -72,6 +73,10 @@ const router = createBrowserRouter([
       {
         path: '/profile/edit-product/:id',
         element: <EditProduct />
+      },
+      {
+        path: '/test',
+        element: <Test />
       }
     ],
 

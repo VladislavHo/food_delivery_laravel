@@ -1,21 +1,41 @@
 import React, { useEffect, useId, useState } from 'react'
 import { getMessagesByApi, sendMessagesByApi } from '../../api/chat';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 //@ts-ignore
 import { echo } from "../../../../js/echo";
 import './message.scss'
+import { getProfileByApi } from '../../api/profile';
+
 export default function Message() {
+  const navigate = useNavigate();
   const { id } = useParams();
-  const userId = JSON.parse(localStorage.getItem('id')!).id
-  console.log(userId);
+  // const userId = JSON.parse(localStorage.getItem('id')!).id
+  // console.log(userId, 'User ID');
 
   const [messageValue, setMessageValue] = useState('');
   const [messages, setMessages] = useState<any[]>([]);
-
+  const [userId, setUserId] = useState('');
   const keyId = useId();
 
+  useEffect(() => {
+    getProfile();
+  }, [])
 
-  useEffect
+  async function getProfile() {
+    const user = await getProfileByApi()
+    console.log(user, 'User ID');
+    
+    if (user.status === 200) {
+      setUserId(user.data.profile.user.id)
+
+
+    } else {
+
+      navigate('/cards');
+
+    }
+
+  }
 
 
 
@@ -40,7 +60,7 @@ export default function Message() {
 
 
 
-  // console.log(messages, "MESSAGES");
+  console.log(messages, "MESSAGES");
 
 
 
@@ -73,9 +93,9 @@ export default function Message() {
     // Прокрутка в самый низ при монтировании компонента
     window.scrollTo(0, document.body.scrollHeight);
     console.log(document.body.scrollHeight, "document.body.scrollHeight");
-    
-    
-}, [messages]);
+
+
+  }, [messages]);
 
   return (
 
@@ -89,8 +109,10 @@ export default function Message() {
             className="w-10 h-10"
           />
           <div className="info flex flex-col">
-            <p className='text-white text-sm font-normal leading-snug'>Vladimir</p>
+            <p className='text-white text-sm font-normal leading-snug'>{messages[0]?.sender.first_name}</p>
+            <a href={`/user/${messages[0]?.sender_id}`}>
             <p className='text-white text-sm font-normal leading-snug'>Перейти в профиль</p>
+            </a>
           </div>
 
         </div>
@@ -142,7 +164,7 @@ export default function Message() {
                         className="w-10 h-10"
                       />
                       <div className="grid">
-                        <h5 className="text-gray-900 text-sm font-semibold leading-snug pb-1">{message.sender.name}</h5>
+                        <h5 className="text-gray-900 text-sm font-semibold leading-snug pb-1">{message.sender.first_name}</h5>
                         <div className="w-max grid">
                           <div className="text-left px-3.5 py-2 bg-gray-100 rounded justify-start items-center gap-3 inline-flex">
                             <h5 className="max-w-64 text-gray-900 text-sm font-normal leading-snug">{message.message}</h5>
@@ -210,4 +232,3 @@ export default function Message() {
 
   )
 }
-//               {message?.created_at && new Date(message.created_at).toLocaleString('ru-RU', { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })}

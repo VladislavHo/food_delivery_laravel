@@ -13,7 +13,7 @@ Auth::routes();
 Route::get('/', function () {
     if (auth()->user())
         return redirect('/profile');
-    return redirect('/login');
+    return redirect('/cards');
 });
 Route::get('{page}', action: [\App\Http\Controllers\MainController::class, 'index'])->where('page', '.*');
 

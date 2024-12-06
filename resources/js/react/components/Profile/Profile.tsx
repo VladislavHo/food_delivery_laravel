@@ -37,7 +37,7 @@ const Profile = observer(() => {
       sessionUserActions(true)
     } else {
       sessionUserActions(false)
-      navigate('/login');
+      navigate('/cards');
 
     }
 

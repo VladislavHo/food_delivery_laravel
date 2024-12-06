@@ -18,7 +18,7 @@ class FoodsController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:sanctum')->except(['foods', 'index']);
+        $this->middleware('auth:sanctum')->except(['foods', 'index', 'foodsWithLocations']);
 
     }
 
@@ -32,6 +32,7 @@ class FoodsController extends Controller
         $userId = $food->user_id;
 
         $seller = User::where('id', $userId)->first();
+
 
 
         if (!$food) {
@@ -52,107 +53,103 @@ class FoodsController extends Controller
     public function foods(Request $request)
     {
         $radius = $request->input('r');
-
         $user = auth()->user();
 
-        $userLocation = $user->locations()->get();
-        // if (!$user) {
-        //     return redirect('/login');
-        // }
-
-        $is_all = $request->input('all');
-        if ($is_all === 'true' || !$user || !$userLocation->count()) {
-
-            $foods = Food::all();
-            if ($foods->isEmpty()) {
-                return response()->json([
-                    'message' => 'foods not found',
-                    'data' => null,
-
-                ], 400);
-            }
-            return response()->json([
-                'message' => 'foods retrieved successfully',
-                'data' => [
-                    'foods' => $foods,
-                    'user' => $user,
-                    'location' => $userLocation
-                ],
-
-            ], 200);
-        } else {
-            $is_delivery = $request->input('d');
-            $is_delivery = $is_delivery === 'true';
-            // Фильтруем еду по условию доставки
-            $foods = Food::where('delivery', $is_delivery)->get();
-
-
-            if ($foods->isEmpty()) {
-                return response()->json([
-                    'message' => 'foods not found',
-                    'data' => null
-                ], 400);
-            }
-
-            // Получаем все местоположения пользователя
-            $locations = $user->locations()->get();
-
-            if ($locations->isEmpty()) {
-                return response()->json([
-                    'message' => 'user location not found',
-                    'data' => null
-                ], 400);
-            }
-
-            $centerCoordinates = [$locations->first()->latitude, $locations->first()->longitude];
-
-            $allLocations = Location::all();
-            // Фильтрация местоположений по радиусу
-            $filteredLocations = $allLocations->filter(function ($location) use ($centerCoordinates, $radius) {
-                $distance = $this->haversineGreatCircleDistance(
-                    $centerCoordinates[0],
-                    $centerCoordinates[1],
-                    $location->latitude,
-                    $location->longitude
-                );
-
-                return $distance <= $radius;
-            });
-
-            $foods = $foods->filter(function ($food) use ($filteredLocations) {
-
-                if ($filteredLocations->isNotEmpty()) {
-                    return $filteredLocations->contains(function ($filteredLocation) use ($food) {
-                        return $food->user_id == $filteredLocation->user_id;
-                    });
-                }
-
-                return false;
-            });
-
-            $foodArray = $foods->values()->toArray();
-
-
-
-
-
-            if ($filteredLocations->isEmpty()) {
-                return response()->json([
-                    'message' => 'No locations found within the specified radius',
-                    'data' => null
-                ], 400);
-            }
-
-            return response()->json([
-                'message' => 'foods retrieved successfully',
-                'data' => [
-                    'foods' => $foodArray,
-                    'user' => $user,
-                    'location' => $locations
-                ]
-            ], 200);
+    
+        // Если пользователь не авторизован
+        if (!$user) {
+            return $this->getAllFoods();
         }
-
+    
+        $userLocation = $user->locations()->get();
+        $is_all = $request->input('all');
+    
+        // Проверка на получение всех товаров
+        if ($is_all === 'true' || !$userLocation->count()) {
+            return $this->getAllFoods($user, $userLocation);
+        }
+    
+        // Фильтрация по доставке
+        $is_delivery = $request->input('d') === 'true';
+        $foods = Food::where('delivery', $is_delivery)->get();
+    
+        if ($foods->isEmpty()) {
+            return response()->json([
+                'message' => 'foods not found',
+                'data' => null
+            ], 400);
+        }
+    
+        // Получаем все местоположения пользователя
+        if ($userLocation->isEmpty()) {
+            return response()->json([
+                'message' => 'user location not found',
+                'data' => null
+            ], 400);
+        }
+    
+        $centerCoordinates = [$userLocation->first()->latitude, $userLocation->first()->longitude];
+        $filteredLocations = $this->filterLocationsByRadius($centerCoordinates, $radius);
+    
+        // Фильтрация еды по местоположению
+        $filteredFoods = $foods->filter(function ($food) use ($filteredLocations) {
+            return $filteredLocations->contains(function ($filteredLocation) use ($food) {
+                return $food->user_id == $filteredLocation->user_id;
+            });
+        });
+    
+        if ($filteredLocations->isEmpty()) {
+            return response()->json([
+                'message' => 'No locations found within the specified radius',
+                'data' => null
+            ], 400);
+        }
+    
+        return response()->json([
+            'message' => 'foods retrieved successfully',
+            'data' => [
+                'foods' => $filteredFoods->values()->toArray(),
+                'user' => $user,
+                'location' => $userLocation
+            ]
+        ], 200);
+    }
+    
+    // Метод для получения всех товаров
+    private function getAllFoods($user = null, $userLocation = null)
+    {
+        $foods = Food::all();
+        if ($foods->isEmpty()) {
+            return response()->json([
+                'message' => 'foods not found',
+                'data' => null
+            ], 400);
+        }
+    
+        return response()->json([
+            'message' => 'foods retrieved successfully',
+            'data' => [
+                'foods' => $foods,
+                'user' => $user,
+                'location' => $userLocation
+            ]
+        ], 200);
+    }
+    
+    // Метод для фильтрации местоположений по радиусу
+    private function filterLocationsByRadius(array $centerCoordinates, $radius)
+    {
+        $allLocations = Location::all();
+        return $allLocations->filter(function ($location) use ($centerCoordinates, $radius) {
+            $distance = $this->haversineGreatCircleDistance(
+                $centerCoordinates[0],
+                $centerCoordinates[1],
+                $location->latitude,
+                $location->longitude
+            );
+    
+            return $distance <= $radius;
+        });
     }
 
 
@@ -163,7 +160,9 @@ class FoodsController extends Controller
             return [
                 'user' => [
 
-                    'name' => $user->name,
+                    'first_name' => $user->first_name,
+                    'last_name' => $user->last_name,
+                    'id' => $user->id
 
                 ],
                 'locations' => $user->locations,
@@ -178,7 +177,7 @@ class FoodsController extends Controller
             ];
         });
 
-        Log::info($userData);
+
         if (!$userData) {
             return response()->json([
                 'message' => 'foods not found',
@@ -269,7 +268,7 @@ class FoodsController extends Controller
     {
 
 
-        Log::info($request->all());
+
         $validatedData = $request->validate([
             'id' => 'required|integer',
         ]);

@@ -35,6 +35,7 @@ export async function createLocationByApi(
         'Content-Type': 'application/json',
         'Accept': 'application/json',
         'X-XSRF-TOKEN': getCookie('XSRF-TOKEN')!,
+        'Authorization': 'Bearer ' + localStorage.getItem('authToken'),
       },
       body: JSON.stringify({
         location: [latitude, longitude],

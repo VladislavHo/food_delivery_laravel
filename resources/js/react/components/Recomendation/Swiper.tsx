@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 // Import Swiper React components
 import { Swiper, SwiperSlide } from 'swiper/react';
 
@@ -10,10 +10,25 @@ import 'swiper/css/pagination';
 
 // import required modules
 import { Pagination } from 'swiper/modules';
+import { getFoodsByApi } from '../../api/foods';
 
-export default function Recomendation({ recomendation }: any) {
-  console.log(recomendation);
+export default function Recomendation() {
+  const [recomendation, setRecomendation] = useState<any>([])
+  useEffect(() => {
+    getRecomendation()
+  }, [])
+  async function getRecomendation() {
+    try {
+      const response = await getFoodsByApi({ d: 1, r: 1, all: 1 })
+      if (response.status !== 200) return
+      setRecomendation(response.data)
 
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  console.log(recomendation, 'recomendation');
+  
   return (
     <>
       <Swiper
@@ -40,7 +55,7 @@ export default function Recomendation({ recomendation }: any) {
         className="mySwiper"
       >
         {
-          recomendation.map((item: any, index: number) => {
+          recomendation.foods && recomendation?.foods.map((item: any, index: number) => {
             return (
               <SwiperSlide key={index}>
                 <div className="swiper-slide--info">

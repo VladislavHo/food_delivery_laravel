@@ -18,9 +18,10 @@ export default function Map() {
     try {
       const orders = await getFoodsWithLocationByApi()
 
-      if (orders.status !== 200) navigate('/login')
+     
 
       setOrders(orders.data)
+
 
     } catch (error) {
       console.log(error)
@@ -47,13 +48,13 @@ export default function Map() {
             return (
               <Marker icon={CASTOM_MARKERS[index >= CASTOM_MARKERS.length ? 0 : index]} key={order.user_id + id + index} position={[latitude, longitude]}>
                 <Popup>
-                  {order.foods.map((food: any, i: number) => (
+                  {order && order.foods.map((food: any, i: number) => (
                     <div key={id + i} className="food--marker" style={{ width: '200px' }}>
                       <a href={`/food?search=${food.food_id}`}>
                         <img src="/images/food.jpg" alt="" />
                         <div className="food-marker--info">
-                          <p>{food.name}</p>
-                          <p> Продовец:{order.user.name}</p>
+                          <p>{food.title}</p>
+                          <p> Продовец:{order.user.first_name} {order.user.last_name}</p>
                           <p>
                             {location.street}, {location.house}, {location.city}
                           </p>

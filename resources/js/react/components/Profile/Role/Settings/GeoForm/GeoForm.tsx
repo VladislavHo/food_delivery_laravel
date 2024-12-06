@@ -45,7 +45,7 @@ const GeoForm = observer(({ locationData }: any) => {
     setGeoData(geo.data)
   }
 
-  async function handleSelectChange(e: React.ChangeEvent<HTMLSelectElement>) {
+   function handleSelectChange(e: React.ChangeEvent<HTMLSelectElement>) {
     const selectedValue = e.target.value;
 
 
@@ -53,7 +53,8 @@ const GeoForm = observer(({ locationData }: any) => {
     const [latitude, longitude, country, city, street, house] = selectedValue.split(',');
 
 
-    await setCoordinates({ latitude: Number(latitude), longitude: Number(longitude), country, city, street, house });
+     setCoordinates({ latitude: Number(latitude), longitude: Number(longitude), country, city, street, house });
+
   }
 
 

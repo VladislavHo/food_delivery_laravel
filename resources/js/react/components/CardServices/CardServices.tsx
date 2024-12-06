@@ -6,6 +6,7 @@ import { FILTER_SVG } from '../SVG/SVG'
 import Filter from './Filter/Filter'
 import Spinner from '../Spiner/Spiner'
 import Card from '../Card/Card'
+import { checkedAuthByApi } from '../../api/profile'
 export default function CardServices() {
   const navigate = useNavigate()
   const id = useId()
@@ -17,11 +18,27 @@ export default function CardServices() {
     r: 200,
     all: false,
   })
+  // const [isLodaing, setIsLodaing] = useState(true)
   useEffect(() => {
-    console.log('orders');
     getOrders()
-    
+    checkedAuth()
   }, [])
+
+  async function checkedAuth() {
+    setIsLoading(true)
+    await checkedAuthByApi()
+      .then((data) => {
+        if (data.status !== 200) {
+          setIsLoading(false)
+          // return navigate('/login')
+        }
+
+
+        setIsLoading(false)
+      });
+  }
+  console.log(foodsData, 'foodsData');
+
 
   async function getOrders() {
 
@@ -39,8 +56,10 @@ export default function CardServices() {
 
       // }
 
+      console.log(orders.data, 'orders.data');
+
       setFoodsData(orders.data)
-      console.log(orders);
+
 
 
     } catch (error) {
@@ -50,49 +69,63 @@ export default function CardServices() {
     }
 
   }
-
+  console.log(filterState);
   return (
 
-    <div className="offer--field">
-      {!!filterState &&
-        <Filter
-          foodsData={foodsData}
-          valueFields={valueFields}
-          setValueFields={setValueFields}
-          setFilterState={setFilterState}
-          getOrders={getOrders} />}
+    <>
+      {isLoading ?
 
-      {!isLoading && (
+        <div className="spinner-container flex justify-center items-center h-screen">
 
-        JSON.parse(localStorage.getItem('filter')!)?.all &&
-          valueFields.all || !foodsData.user || !foodsData.location.length ? <h2 className='all'>Все</h2> :
-          <h2>Рядом с вами в пределах {localStorage.getItem('filter') ?
-            JSON.parse(localStorage.getItem('filter')!).r : valueFields.r} м</h2>
+          <Spinner />
+        </div> : <>
+          <div className="offer--field">
+            {!!filterState &&
+              <Filter
+                foodsData={foodsData}
+                valueFields={valueFields}
+                setValueFields={setValueFields}
+                setFilterState={setFilterState}
+                getOrders={getOrders} />}
 
-      )}
-      <div className="filter-btn--wrapper">
-        <input type="text" placeholder='Поиск (в разработке)' />
-        <button className='filter-btn' onClick={() => setFilterState(true)}><span>Фильтр</span> <FILTER_SVG /></button>
-      </div>
+            {!isLoading && (() => {
+              const filter = JSON.parse(localStorage.getItem('filter')!);
+              const isAll = filter?.all || valueFields.all;
+              const hasUserData = foodsData?.user;
+              const hasLocation = Array.isArray(foodsData?.location) && foodsData.location.length > 0;
+              console.log(isAll, hasUserData, hasLocation);
 
-      <div className="bg-white pb-16">
-        <div className="mx-auto lg:max-w-2xl  px-4 py-6 sm:px-6 sm:py-12 lg:px-8">
+              if (isAll || !hasUserData || !hasLocation) {
+                return <h2 className='all'>Все</h2>;
+              }
 
-          <div className="">
-            {foodsData.foods ? (
-              foodsData.foods.map((food: any, index: number) => (
-                <Card item={food} />
-              ))) : (
-              <li>Нет доступных продуктов</li>
-            )
-            }
-          </div>
-        </div>
-      </div>
+              const radius = filter ? filter.r : valueFields.r;
 
-      {/* <span>{rangeValue}</span> */}
+              return <h2>Рядом с вами в пределах {radius} м</h2>;
+            })()}
+            <div className="filter-btn--wrapper">
+              <input type="text" placeholder='Поиск (в разработке)' />
+              <button className='filter-btn' onClick={() => setFilterState(true)}><span>Фильтр</span> <FILTER_SVG /></button>
+            </div>
 
-      {/* <ul style={!!foodsData.foods && foodsData.foods.length > 2 ? { justifyContent: 'space-between' } : { justifyContent: 'flex-start' }}>
+            <div className="bg-white pb-16">
+              <div className="mx-auto lg:max-w-2xl  px-4 py-6 sm:px-6 sm:py-12 lg:px-8">
+
+                <div className="">
+                  {foodsData && foodsData.foods ? (
+                    foodsData.foods.map((food: any, index: number) => (
+                      <Card item={food} />
+                    ))) : (
+                    <li>Нет доступных продуктов</li>
+                  )
+                  }
+                </div>
+              </div>
+            </div>
+
+            {/* <span>{rangeValue}</span> */}
+
+            {/* <ul style={!!foodsData.foods && foodsData.foods.length > 2 ? { justifyContent: 'space-between' } : { justifyContent: 'flex-start' }}>
         {isLoading ? <Spinner /> :
 
           foodsData.foods ? (
@@ -114,6 +147,9 @@ export default function CardServices() {
           )
         }
       </ul> */}
-    </div>
+          </div></>}
+    </>
+
+
   )
 }

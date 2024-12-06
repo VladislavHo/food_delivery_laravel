@@ -11,6 +11,7 @@ export async function getChatsByApi() {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
         'X-XSRF-TOKEN': getCookie('XSRF-TOKEN')!,
+        'Authorization': 'Bearer ' + localStorage.getItem('authToken'),
       },
 
     }
@@ -47,12 +48,13 @@ console.log(friendId);
   try {
     await fetch('/sanctum/csrf-cookie');
 
-    const response = await fetch(`/api/chat/${friendId}`, {
+    const response = await fetch(`/api/chat/${friendId}/create`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
         'X-XSRF-TOKEN': getCookie('XSRF-TOKEN')!,
+        'Authorization': 'Bearer ' + localStorage.getItem('authToken'),
       },
 
     }
@@ -87,12 +89,13 @@ export async function sendMessagesByApi({ chatId, message }: { chatId: string, m
   try {
     await fetch('/sanctum/csrf-cookie');
 
-    const response = await fetch(`/api/messages`, {
+    const response = await fetch(`/api/messages/create`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
         'X-XSRF-TOKEN': getCookie('XSRF-TOKEN')!,
+        'Authorization': 'Bearer ' + localStorage.getItem('authToken'),
       },
       body: JSON.stringify({ chatId, message })
 
@@ -135,6 +138,7 @@ export async function getMessagesByApi({ chatId }: { chatId: string }) {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
         'X-XSRF-TOKEN': getCookie('XSRF-TOKEN')!,
+        'Authorization': 'Bearer ' + localStorage.getItem('authToken'),
       },
 
     }

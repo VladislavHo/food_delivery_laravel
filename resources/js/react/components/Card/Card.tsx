@@ -1,7 +1,7 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
-export default function Card({item}:any) {
+export default function Card({ item }: any) {
   const navigate = useNavigate()
   return (
     <>
@@ -14,7 +14,11 @@ export default function Card({item}:any) {
         <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/40"></div>
 
         <h3 className="z-10 mt-3 mb-2 text-3xl font-bold text-white">{item.title}</h3>
-        <p className="rounded-md max-w-24 text-center  px-3 py-0.4 z-10 gap-y-1 overflow-hidden text-sm leading-6 bg-green-500 text-white">Доставка</p>
+        {
+          !!item.delivery && (
+            <p className="rounded-md max-w-24 text-center  px-3 py-0.4 z-10 gap-y-1 overflow-hidden text-sm leading-6 bg-green-500 text-white">Доставка</p>
+          )
+        }
       </article>
     </>
   )

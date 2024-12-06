@@ -6,6 +6,7 @@ import checkLoginByApi from '../../../api/login';
 import { useState } from "react";
 import store from "../../../store/store";
 import { observer } from "mobx-react-lite";
+import TelegramLoginButton from "../../Buttons/TelegramLoginButton";
 
 
 const FormSign = observer(() => {
@@ -71,6 +72,7 @@ const FormSign = observer(() => {
         </label>
         <button type="submit" className='bg-sky-700 text-purple-50 px-6 py-2 rounded'>Войти</button>
       </form>
+
       {error && <p className='text-red-500'>{error}</p>}
 
       <a href="/register" className='text-cyan-700'>Регистрация</a>

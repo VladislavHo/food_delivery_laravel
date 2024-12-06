@@ -21,18 +21,20 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
     Route::get('/chats', [App\Http\Controllers\ChatController::class, 'index'])->name('chat.index');
-    Route::post('/chat/{friendId}', [App\Http\Controllers\ChatController::class, 'create'])->name('chat.create');
-    Route::post('/messages', [App\Http\Controllers\MessageController::class, 'create'])->name('messages.create');
+    Route::post('/chat/{friendId}/create', [App\Http\Controllers\ChatController::class, 'create'])->name('chat.create');
+    Route::post('/messages/create', [App\Http\Controllers\MessageController::class, 'create'])->name('messages.create');
 
     Route::get('/messages/{chatId}', [App\Http\Controllers\MessageController::class, 'index'])->name('messages.index');
     // Route::delete('/users/{id}', [App\Http\Controllers\ProfileController::class, 'destroy'])->name('users.destroy');
     Route::get('/foods/delete', [App\Http\Controllers\FoodsController::class, 'delete'])->name('foods.delete');
     Route::get('/foods/edit', [App\Http\Controllers\FoodsController::class, 'edit'])->name('foods.edit');
+    Route::get('/food/{food_id}', [App\Http\Controllers\FoodsController::class, 'index'])->name('food.index');
+    Route::get('/foods', [App\Http\Controllers\FoodsController::class, 'foods'])->name('foods');
 });
 
-Route::get('/food/{food_id}', [App\Http\Controllers\FoodsController::class, 'index'])->name('food.index');
-Route::get('/foods', [App\Http\Controllers\FoodsController::class, 'foods'])->name('foods');
 
 
+Route::get('/auth/telegram', [App\Telegram\AuthController::class, 'redirectToTelegram']);
+Route::post('/auth/telegram/callback', [App\Telegram\AuthController::class, 'handleTelegramCallback']);
 
 

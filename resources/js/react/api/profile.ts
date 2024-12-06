@@ -1,20 +1,27 @@
+import { error } from "console";
 import { getCookie } from "../cookies";
 
 
 export async function checkedAuthByApi(): Promise<any> {
   try {
-    await fetch('/sanctum/csrf-cookie');
+
     const response = await fetch('/api/auth', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
         'X-XSRF-TOKEN': getCookie('XSRF-TOKEN')!,
+        'Authorization': 'Bearer ' + localStorage.getItem('authToken'),
+
       },
     });
 
+
+
+    console.log(response);
+
     if (!response.ok) {
-      return { status: response.status, error: 'Auth error' };
+      return { status: response.status, error: response.statusText };
     }
 
 
@@ -29,26 +36,27 @@ export async function checkedAuthByApi(): Promise<any> {
 }
 export async function getProfileByApi(): Promise<any> {
   try {
-    await fetch('/sanctum/csrf-cookie');
+
     const response = await fetch('/api/profile', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
         'X-XSRF-TOKEN': getCookie('XSRF-TOKEN')!,
+        'Authorization': 'Bearer ' + localStorage.getItem('authToken'),
       },
     });
 
     if (!response.ok) {
-      return { status: response.status, error: 'Неверный логин или пароль' };
+      return { status: response.status, error: response.statusText };
     }
 
 
     const data = await response.json();
 
     console.log(data);
-    
-    localStorage.setItem('id', JSON.stringify({ id: data.profile.user.id }));
+
+
 
 
     return { status: 200, data };

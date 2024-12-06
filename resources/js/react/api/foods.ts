@@ -3,7 +3,7 @@ import { getCookie } from "../cookies"
 
 
 export async function getFoodByApi({ food_id }: any): Promise<any> {
-  await fetch('/sanctum/csrf-cookie');
+
   try {
     const response = await fetch(`/api/food/${food_id}`, {
       method: 'GET',
@@ -11,6 +11,8 @@ export async function getFoodByApi({ food_id }: any): Promise<any> {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
         'X-XSRF-TOKEN': getCookie('XSRF-TOKEN')!,
+        'Authorization': 'Bearer ' + localStorage.getItem('authToken'),
+
       },
     })
 
@@ -29,19 +31,24 @@ export async function getFoodByApi({ food_id }: any): Promise<any> {
 
 
 export async function getFoodsByApi({ d, r, all }: any): Promise<any> {
-  await fetch('/sanctum/csrf-cookie');
   try {
-    const response = await fetch(`/api/foods?d=${d}&r=${r}&all=${all}`, {
+
+    const queryString = new URLSearchParams({
+      d: encodeURIComponent(d),
+      r: encodeURIComponent(r),
+      all: encodeURIComponent(all),
+    }).toString();
+    
+    const response = await fetch(`/api/foods?${queryString}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
         'X-XSRF-TOKEN': getCookie('XSRF-TOKEN')!,
+        'Authorization': 'Bearer ' + localStorage.getItem('authToken'),
+
       },
     })
-
-
-    console.log(response);
 
     if (!response.ok) {
       return { status: response.status, error: 'Списоков товаров не найдено' }
@@ -57,7 +64,7 @@ export async function getFoodsByApi({ d, r, all }: any): Promise<any> {
 }
 
 export async function getFoodsWithLocationByApi(): Promise<any> {
-  await fetch('/sanctum/csrf-cookie');
+
   try {
     const response = await fetch('/api/foods/location', {
       method: 'GET',
@@ -65,6 +72,7 @@ export async function getFoodsWithLocationByApi(): Promise<any> {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
         'X-XSRF-TOKEN': getCookie('XSRF-TOKEN')!,
+        'Authorization': 'Bearer ' + localStorage.getItem('authToken'),
       },
     })
 
@@ -94,6 +102,7 @@ export async function createOrderByApi({ title, description, delivery, address }
         'Content-Type': 'application/json',
         'Accept': 'application/json',
         'X-XSRF-TOKEN': getCookie('XSRF-TOKEN')!,
+        'Authorization': 'Bearer ' + localStorage.getItem('authToken'),
       },
       body: JSON.stringify({
         title,
@@ -121,9 +130,6 @@ export async function createOrderByApi({ title, description, delivery, address }
 
 export async function deleteFoodsByApi({id}: any): Promise<any> {
 
-  await fetch('/sanctum/csrf-cookie');
-
-  
   try {
     const response = await fetch(`/api/foods/delete?id=${id}`, {
       method: 'GET',
@@ -131,6 +137,7 @@ export async function deleteFoodsByApi({id}: any): Promise<any> {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
         'X-XSRF-TOKEN': getCookie('XSRF-TOKEN')!,
+        'Authorization': 'Bearer ' + localStorage.getItem('authToken'),
       },
 
     })
@@ -153,11 +160,6 @@ export async function deleteFoodsByApi({id}: any): Promise<any> {
 
 export async function editFoodsByApi({id, title, description, delivery}: any): Promise<any> {
 
-  await fetch('/sanctum/csrf-cookie');
-
-  console.log({id, title, description, delivery});
-  
-  
   try {
     const response = await fetch(`/api/foods/edit?id=${id}&title=${title}&description=${description}&delivery=${delivery}`, {
       method: 'GET',
@@ -165,11 +167,10 @@ export async function editFoodsByApi({id, title, description, delivery}: any): P
         'Content-Type': 'application/json',
         'Accept': 'application/json',
         'X-XSRF-TOKEN': getCookie('XSRF-TOKEN')!,
+        'Authorization': 'Bearer ' + localStorage.getItem('authToken'),
       },
 
     })
-
-
 
     if (!response.ok) {
       return { status: response.status, error: 'Пользователь не найден' }
