@@ -29,8 +29,31 @@ export async function getFoodByApi({ food_id }: any): Promise<any> {
   }
 }
 
+export async function getFoodsByApi(): Promise<any> {
 
-export async function getFoodsByApi({ d, r, all }: any): Promise<any> {
+  try {
+    const response = await fetch(`/api/foods`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'X-XSRF-TOKEN': getCookie('XSRF-TOKEN')!,
+
+      },
+    })
+
+    if (!response.ok) {
+      return { status: response.status, error: 'Списоков товаров не найдено' }
+    }
+
+    const data = await response.json()
+
+    return { status: 200, data: data}
+  } catch (error) {
+    return { status: 500, error: (error as Error).message ?? 'Неизвестная ошибка' }
+  }
+}
+export async function getFoodsFilterByApi({ d, r, all }: any): Promise<any> {
   try {
 
     const queryString = new URLSearchParams({
@@ -39,7 +62,7 @@ export async function getFoodsByApi({ d, r, all }: any): Promise<any> {
       all: encodeURIComponent(all),
     }).toString();
     
-    const response = await fetch(`/api/foods?${queryString}`, {
+    const response = await fetch(`/api/foods/filter?${queryString}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

@@ -50,7 +50,15 @@ class FoodsController extends Controller
         // $user = Auth::user();
     }
 
-    public function foods(Request $request)
+    public function foods()
+    {
+        $foods = Food::all();
+        return response()->json([
+            'message' => 'foods retrieved successfully',
+            'foods' => $foods
+        ]);
+    }
+    public function foodsFilter(Request $request)
     {
         $radius = $request->input('r');
         $user = auth()->user();

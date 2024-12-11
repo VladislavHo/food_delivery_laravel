@@ -10,7 +10,7 @@ import 'swiper/css/pagination';
 
 // import required modules
 import { Pagination } from 'swiper/modules';
-import { getFoodsByApi } from '../../api/foods';
+import { getFoodsFilterByApi } from '../../api/foods';
 
 export default function Recomendation() {
   const [recomendation, setRecomendation] = useState<any>([])
@@ -19,7 +19,7 @@ export default function Recomendation() {
   }, [])
   async function getRecomendation() {
     try {
-      const response = await getFoodsByApi({ d: 1, r: 1, all: 1 })
+      const response = await getFoodsFilterByApi({ d: 1, r: 1, all: 1 })
       if (response.status !== 200) return
       setRecomendation(response.data)
 

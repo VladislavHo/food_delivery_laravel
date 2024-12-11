@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
 import searchQueryParams from '../../hook/searchQueryParams';
-import { getFoodByApi, getFoodsByApi } from '../../api/foods';
+import { getFoodByApi, getFoodsFilterByApi } from '../../api/foods';
 import Recomendation from '../Recomendation/Swiper';
 import './food.scss'
 import OrdersButton from '../Buttons/OrdersButton';

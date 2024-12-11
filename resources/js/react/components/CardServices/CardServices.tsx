@@ -1,6 +1,6 @@
 import React, { useEffect, useId, useState } from 'react'
 import './card_services.scss'
-import { getFoodsByApi } from '../../api/foods'
+import { getFoodsByApi, getFoodsFilterByApi } from '../../api/foods'
 import { useNavigate } from 'react-router-dom'
 import { FILTER_SVG } from '../SVG/SVG'
 import Filter from './Filter/Filter'
@@ -37,7 +37,7 @@ export default function CardServices() {
         setIsLoading(false)
       });
   }
-  console.log(foodsData, 'foodsData');
+
 
 
   async function getOrders() {
@@ -45,31 +45,41 @@ export default function CardServices() {
 
     try {
       setIsLoading(true)
-      const orders = await getFoodsByApi({
+      await getFoodsFilterByApi({
         d: localStorage.getItem('filter') ? JSON.parse(localStorage.getItem('filter')!).d : valueFields.d,
         r: localStorage.getItem('filter') ? JSON.parse(localStorage.getItem('filter')!).r : valueFields.r,
         all: localStorage.getItem('filter') ? JSON.parse(localStorage.getItem('filter')!).all : valueFields.all && true,
-      }).finally(() => (setIsLoading(false)))
-      // const foods = orders.data[0].foods
+      }).then((data) => {
+        if (data.status !== 200) {
+           getFoodsByApi().then((data) => {
+            console.log(data.data, 'foods all data');
+            
+            setFoodsData(data.data)
+          })
+        }
+        setFoodsData(data.data)
 
-      // if (orders.status !== 200) {
+      })
 
-      // }
+      .finally(() => (setIsLoading(false)))
 
-      console.log(orders.data, 'orders.data');
+      
 
-      setFoodsData(orders.data)
+
+
+      
+
 
 
 
     } catch (error) {
-      console.log(error)
+      console.log(error, 'ERROR');
 
       setFoodsData([])
     }
 
   }
-  console.log(filterState);
+  console.log(foodsData, 'foodsData!!!!');
   return (
 
     <>
@@ -93,7 +103,6 @@ export default function CardServices() {
               const isAll = filter?.all || valueFields.all;
               const hasUserData = foodsData?.user;
               const hasLocation = Array.isArray(foodsData?.location) && foodsData.location.length > 0;
-              console.log(isAll, hasUserData, hasLocation);
 
               if (isAll || !hasUserData || !hasLocation) {
                 return <h2 className='all'>Все</h2>;
