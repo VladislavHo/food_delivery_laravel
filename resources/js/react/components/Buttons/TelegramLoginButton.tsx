@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { getCookie } from '../../cookies';
 
 declare global {
     interface Window {
@@ -31,6 +32,8 @@ const TelegramLogin: React.FC = () => {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-XSRF-TOKEN': getCookie('XSRF-TOKEN')!,
                 },
                 body: JSON.stringify(user),
             }).then(response => response.json()).then(data =>  {
