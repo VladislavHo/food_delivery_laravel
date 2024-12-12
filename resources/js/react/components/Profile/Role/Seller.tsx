@@ -66,7 +66,7 @@ function Seller({ profileData }: any) {
 
                         <img
                             className="object-cover object-center h-32"
-                            src='./images/person.webp'
+                            src={user?.photo_url || './images/person.webp'} 
                             alt={user?.first_name || 'User Photo'}
                             onLoad={() => setImageLoading(false)}
                             onError={() => {
