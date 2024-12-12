@@ -4,7 +4,7 @@ export const APP_SERVER: string = 'http://127.0.0.1:8000';
 export const START_LOCATION: LatLng = new LatLng(46.823087, 29.481899);
 
 
-export const TELEGRAM_BOT_NAME: string = 'food_delivery_auth11_bot';
+export const TELEGRAM_BOT_NAME: string = 'mamining_store_bot';
 export const FILTER_DEFAULT_VALUE: { d: boolean, r: number, all: boolean } = {
   d: true,
   r: 200,
