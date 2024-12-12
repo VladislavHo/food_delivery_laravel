@@ -8,11 +8,9 @@ import CardServices from './components/CardServices/Cards';
 import Food from './components/Food/Food';
 import Chat from './components/Chat/Chat';
 import Active from './components/Active/Active';
-
 import Message from './components/Message/Message';
 import CreateProduct from './components/Profile/Role/CreateProduct/CreateProduct';
 import EditProduct from './components/Profile/Role/EditProduct/EditProduct';
-import Test from './components/Test/Test';
 import NotFound from './components/NotFound/NotFound';
 
 
@@ -72,15 +70,10 @@ const router = createBrowserRouter([
       {
         path: '/profile/edit-product/:id',
         element: <EditProduct />
-      },
-      {
-        path: '/test',
-        element: <Test />
       }
     ],
 
   },
-
 
 ]);
 

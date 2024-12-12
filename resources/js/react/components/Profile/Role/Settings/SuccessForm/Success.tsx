@@ -15,9 +15,9 @@ export default function SuccessForm({
         setIsSuccess((prevState) => ({ ...prevState, state: false }));
       }, 3000);
 
-      return () => clearTimeout(timer); // Очистка таймера при размонтировании
+      return () => clearTimeout(timer); 
     }
-  }, [state, setIsSuccess]); // Зависимость от state и setIsSuccess
+  }, [state, setIsSuccess]); 
 
   return (
     <div className={`success--wrapper ${state ? 'active' : ''}`}>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+
 
 const Modal = ({ text, setIsOpenDeleteModal, deleteFoods, id }: any) => {
 

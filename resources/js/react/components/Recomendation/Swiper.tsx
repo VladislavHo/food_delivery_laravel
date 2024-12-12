@@ -1,14 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react';
-// Import Swiper React components
+import { useEffect, useState } from 'react';
+
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-// Import Swiper styles
+
 import 'swiper/css';
 import 'swiper/css/pagination';
 
-// import './styles.css';
 
-// import required modules
+
 import { Pagination } from 'swiper/modules';
 import { getFoodsFilterByApi } from '../../api/foods';
 
@@ -27,8 +26,8 @@ export default function Recomendation() {
       console.log(error)
     }
   }
+  console.log(recomendation, 'recomendation');
 
-  
   return (
     <>
       <Swiper

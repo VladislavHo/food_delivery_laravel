@@ -175,7 +175,7 @@ export const FILTER_SVG = () => {
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-    // This allows you to pass additional props such as className or style
+
     >
       <path
         fillRule="evenodd"

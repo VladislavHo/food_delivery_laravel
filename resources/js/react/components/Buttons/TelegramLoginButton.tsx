@@ -1,28 +1,24 @@
 import React, { useEffect } from 'react';
 import { getCookie } from '../../cookies';
+import { TELEGRAM_BOT_NAME } from '../../config';
 
 declare global {
     interface Window {
-        onTelegramAuth?: (user: any) => void; // Опциональная функция
+        onTelegramAuth?: (user: any) => void; 
     }
 }
-
 const TelegramLogin: React.FC = () => {
     useEffect(() => {
         const script = document.createElement('script');
         script.src = "https://telegram.org/js/telegram-widget.js?22";
         script.async = true;
-        script.setAttribute('data-telegram-login', 'food_delivery_auth11_bot'); 
+        script.setAttribute('data-telegram-login', TELEGRAM_BOT_NAME);
         script.setAttribute('data-size', 'large');
-        script.setAttribute('data-userpic', 'false'); 
+        script.setAttribute('data-userpic', 'false');
         script.setAttribute('data-onauth', 'onTelegramAuth(user)');
-        script.setAttribute('data-request-access', 'write'); 
-
+        script.setAttribute('data-request-access', 'write');
         document.getElementById('telegram-login-button')?.appendChild(script);
-
-
         window.onTelegramAuth = async (user) => {
-
 
             await fetch('/api/auth/telegram/callback', {
                 method: 'POST',
@@ -32,7 +28,7 @@ const TelegramLogin: React.FC = () => {
                     'X-XSRF-TOKEN': getCookie('XSRF-TOKEN')!,
                 },
                 body: JSON.stringify(user),
-            }).then(response => response.json()).then(data =>  {
+            }).then(response => response.json()).then(data => {
                 localStorage.setItem('authToken', data.token);
                 window.location.reload();
             }).catch(error => console.error(error));
@@ -41,7 +37,7 @@ const TelegramLogin: React.FC = () => {
 
         return () => {
             document.body.removeChild(script);
-            delete window.onTelegramAuth; 
+            delete window.onTelegramAuth;
         };
     }, []);
 

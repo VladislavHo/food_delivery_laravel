@@ -1,23 +1,20 @@
-import React, { useEffect, useId, useState } from 'react'
-import './card_services.scss'
+import { useEffect, useId, useState } from 'react'
+import './cards.scss'
 import { getFoodsByApi, getFoodsFilterByApi } from '../../api/foods'
-import { useNavigate } from 'react-router-dom'
+
 import { FILTER_SVG } from '../SVG/SVG'
 import Filter from './Filter/Filter'
 import Spinner from '../Spiner/Spiner'
 import Card from '../Card/Card'
 import { checkedAuthByApi } from '../../api/profile'
+import { FILTER_DEFAULT_VALUE } from '../../config'
 export default function Cards() {
-  const navigate = useNavigate()
+
   const id = useId()
   const [foodsData, setFoodsData] = useState<any>([])
   const [isLoading, setIsLoading] = useState(false)
   const [filterState, setFilterState] = useState(false)
-  const [valueFields, setValueFields] = useState({
-    d: true,
-    r: 200,
-    all: false,
-  })
+  const [valueFields, setValueFields] = useState(FILTER_DEFAULT_VALUE)
   useEffect(() => {
     getOrders()
     checkedAuth()

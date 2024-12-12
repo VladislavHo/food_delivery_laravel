@@ -8,13 +8,10 @@ import TelegramLoginButton from '../Buttons/TelegramLoginButton';
 
 
 const Header = observer(() => {
-
   const [session, setSession] = useState(true)
-
 
   useEffect(() => {
 
-    // setSession(!!id)
     setSession(!!localStorage.getItem('authToken'))
 
   }, [session])

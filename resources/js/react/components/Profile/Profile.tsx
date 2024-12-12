@@ -2,17 +2,10 @@ import { useEffect, useState } from "react"
 import { getProfileByApi } from "../../api/profile";
 import { useNavigate } from "react-router-dom";
 import Spinner from "../Spiner/Spiner";
-
 import { observer } from "mobx-react-lite";
 import store from "../../store/store";
-
 import Seller from "./Role/Seller";
-
 import { CLOSE_SVG, SETTING_SVG } from "../SVG/SVG";
-
-
-
-
 
 const Profile = observer(() => {
   const { sessionUserActions } = store
@@ -33,7 +26,6 @@ const Profile = observer(() => {
 
     if (user.status === 200) {
       setProfileData(user.data);
-      // setIsSeller(user.data.profile.user.role === 'seller');
       sessionUserActions(true)
     } else {
       sessionUserActions(false)
@@ -65,10 +57,8 @@ const Profile = observer(() => {
                       <a className='underline' href="/profile/settings"> настройках</a>
                     </p>
                   </div>
-
                 )
               )
-
             }
             <div className="header--profile flex justify-end absolute top-0 right-0 z-10 ">
 

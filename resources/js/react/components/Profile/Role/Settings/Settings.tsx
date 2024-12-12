@@ -1,11 +1,10 @@
 import logoutByApi from "../../../../api/logout";
 import GeoForm from "./GeoForm/GeoForm";
 import { useNavigate } from "react-router-dom";
-import "./settings.scss"
 import { checkedAuthByApi } from "../../../../api/profile";
 import { useEffect, useState } from "react";
 import Spinner from "../../../Spiner/Spiner";
-// import { sessionUserActions } from "../../store/sessionUser";
+import "./settings.scss"
 
 export default function Settings() {
   const navigate = useNavigate();

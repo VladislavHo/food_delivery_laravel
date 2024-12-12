@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useId, useState } from "react"
 import { getUserByApi } from "../../api/users";
 import { useNavigate, useParams } from "react-router-dom";
 import Spinner from "../Spiner/Spiner";
@@ -9,7 +9,7 @@ export default function User() {
   const [userData, setUserData] = useState<any>();
   const [loading, setLoading] = useState(true);
   const { id } = useParams();
-
+  const key = useId();
   useEffect(() => {
     getUser()
 
@@ -64,12 +64,7 @@ export default function User() {
               <div className="cards">
                 {
                   userData.foods?.map((item: any) => (
-                    // <div className="card" key={item.id} onClick={() => navigate(`/food?search=${item.id}`)}>
-
-                    //   <img src='./images/food.jpg' alt="" />
-                    //   <p>{item.title}</p>
-                    // </div>
-                    <Card item={item} />
+                    <Card item={item} id={key}/>
                   ))
                 }
               </div>

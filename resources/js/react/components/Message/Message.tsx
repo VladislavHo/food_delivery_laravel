@@ -47,14 +47,8 @@ export default function Message() {
     await getMessagesByApi({ chatId: id })
       .then((data) => {
         setMessages(data.data.data)
-
-
       })
-
   }
-
-
-
   async function buttonSubmitSendMessage({ id, message }: { id: string, message: string }) {
 
     await sendMessagesByApi({ chatId: id, message })

@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import CreateProductForm from './CreateProductForm/CreateProductForm';
 import './seller.scss';
 import { useNavigate } from 'react-router-dom';
-import OrdersButton from '../../Buttons/OrdersButton';
 import { deleteFoodsByApi } from '../../../api/foods';
 import Modal from '../../Modal/DeleteModal';
 import { loadImage } from '../../../hook/loadImage';
@@ -15,7 +14,7 @@ function Seller({ profileData }: any) {
     const [isOpenCreateProductForm, setIsOpenCreateProductForm] = useState(false);
     const [isOpenDeleteModal, setIsOpenDeleteModal] = useState({ state: false, id: null });
     const [imageLoading, setImageLoading] = useState(true);
-    const [userImageUrl, setUserImageUrl] = useState<string | null>(null);
+
 
     useEffect(() => {
         if (foods) {
@@ -24,14 +23,13 @@ function Seller({ profileData }: any) {
     }, [foods]);
 
     useEffect(() => {
-        // Загрузка изображения пользователя
+
         const fetchImage = async () => {
             if (user?.photo_url) {
-                const imageUrl = await loadImage(user.photo_url);
-                setUserImageUrl(imageUrl || null);
+
                 setImageLoading(false);
             } else {
-                setImageLoading(false); // Если аватар отсутствует
+                setImageLoading(false); 
             }
         };
         fetchImage();
@@ -73,7 +71,6 @@ function Seller({ profileData }: any) {
                             onLoad={() => setImageLoading(false)}
                             onError={() => {
                                 setImageLoading(false);
-                                setUserImageUrl(null); // Установите в null, если ошибка загрузки
                             }}
                         />
                

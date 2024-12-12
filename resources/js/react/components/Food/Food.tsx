@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import  { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
 import searchQueryParams from '../../hook/searchQueryParams';
-import { getFoodByApi, getFoodsFilterByApi } from '../../api/foods';
+import { getFoodByApi } from '../../api/foods';
 import Recomendation from '../Recomendation/Swiper';
 import './food.scss'
-import OrdersButton from '../Buttons/OrdersButton';
+
 import { createChatByApi } from '../../api/chat';
 import { checkedAuthByApi } from '../../api/profile';
 import Spinner from '../Spiner/Spiner';
@@ -18,11 +18,8 @@ export default function Food() {
   const [seller, setSeller] = useState<any>();
   const [isSeller, setIsSeller] = useState(true);
   const [isLodaing, setIsLodaing] = useState(true);
-  // const [userId, setUserId] = useState<any>();
   useEffect(() => {
     getFood()
-
-    // checkedAuth()
   }, [])
 
   async function checkedAuth({ sellerId }: any) {
@@ -48,17 +45,10 @@ export default function Food() {
 
 
   async function buttonSubmitCreateChat({ friendId }: { friendId: number }) {
-
-
-
     const response = await createChatByApi({ friendId });
-
-
     if (response.status === 200) {
-
       navigate(`/message/${response.data.chat_id}`)
     }
-
   }
 
 
@@ -84,12 +74,10 @@ export default function Food() {
                 {isSeller && (
                   <button onClick={() => buttonSubmitCreateChat({ friendId: foods.user_id })}>Заказать</button>
                 )}
-                {/* <OrdersButton text="Заказать" /> */}
+
               </div>
             </div>
           </div>
-
-
 
           <div className="recomendation">
             <h3>Рядом с вами</h3>

@@ -1,5 +1,5 @@
-import React, { useEffect, useId, useState } from 'react'
-import { createChatByApi, getChatsByApi } from '../../api/chat';
+import { useEffect, useId, useState } from 'react'
+import { getChatsByApi } from '../../api/chat';
 import { useNavigate } from 'react-router-dom';
 import './chat.scss'
 import { checkedAuthByApi } from '../../api/profile';
@@ -51,8 +51,6 @@ export default function Chat() {
         <>
           <div className="chat flex gap-2 flex-col">
             <h2>Чаты</h2>
-
-
             {chatData && chatData.map((item: any, index: number) => {
               return (
                 <a href={`/message/${item.id}`} >
