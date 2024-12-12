@@ -1,12 +1,10 @@
 import { createBrowserRouter } from 'react-router-dom';
 import App from './components/App';
-import Login from './components/FormData/Login/Login';
-import Register from './components/FormData/Register/Register';
 import Profile from './components/Profile/Profile';
 import Map from './components/Map/Map';
 import User from './components/User/User';
 import Settings from './components/Profile/Role/Settings/Settings';
-import CardServices from './components/CardServices/CardServices';
+import CardServices from './components/CardServices/Cards';
 import Food from './components/Food/Food';
 import Chat from './components/Chat/Chat';
 import Active from './components/Active/Active';
@@ -15,13 +13,14 @@ import Message from './components/Message/Message';
 import CreateProduct from './components/Profile/Role/CreateProduct/CreateProduct';
 import EditProduct from './components/Profile/Role/EditProduct/EditProduct';
 import Test from './components/Test/Test';
+import NotFound from './components/NotFound/NotFound';
 
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
-    errorElement: <div>404</div>,
+    errorElement: <NotFound/>,
 
     children: [
       {
@@ -80,14 +79,6 @@ const router = createBrowserRouter([
       }
     ],
 
-  },
-  {
-    path: '/login',
-    element: <Login />
-  },
-  {
-    path: '/register',
-    element: <Register />,
   },
 
 

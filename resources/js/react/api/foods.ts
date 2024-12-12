@@ -135,7 +135,6 @@ export async function createOrderByApi({ title, description, delivery, address }
       })
     })
 
-    console.log(response);
 
     if (!response.ok) {
       return { status: response.status, error: 'Пользователь не найден' }
@@ -165,7 +164,6 @@ export async function deleteFoodsByApi({id}: any): Promise<any> {
 
     })
 
-    console.log(response);
 
     if (!response.ok) {
       return { status: response.status, error: 'Пользователь не найден' }

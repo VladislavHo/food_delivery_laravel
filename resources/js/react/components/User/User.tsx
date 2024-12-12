@@ -6,7 +6,6 @@ import Card from "../Card/Card";
 
 
 export default function User() {
-  const navigate = useNavigate();
   const [userData, setUserData] = useState<any>();
   const [loading, setLoading] = useState(true);
   const { id } = useParams();
@@ -26,8 +25,7 @@ export default function User() {
 
 
         if (userData.status !== 200) {
-          // navigate('/login')
-          console.log(userData)
+
         }
         setLoading(false)
       }

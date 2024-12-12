@@ -33,7 +33,6 @@ export default function CreateProduct({ setIsOpenCreateProductForm }: any) {
     setIsLoading(true)
     await createOrderByApi(data)
       .then((response) => {
-        console.log(response);
         setIsLoading(false);
 
         if (response.status !== 200) {

@@ -38,8 +38,6 @@ export default function ChangeProduct() {
           setIsLodaing(false)
           return navigate('/login')
         }
-        console.log(data);
-
         setIsLodaing(false)
       });
   }
@@ -60,14 +58,12 @@ export default function ChangeProduct() {
   }, [])
 
   const isSubmit = async (data: any) => {
-    console.log(data)
     editProduct(data)
   }
 
   async function editProduct(data: any) {
     await editFoodsByApi({ id, ...data })
       .then((response) => {
-        console.log(response);
         if (response.status !== 200) {
           setIsSuccess({
             state: true,

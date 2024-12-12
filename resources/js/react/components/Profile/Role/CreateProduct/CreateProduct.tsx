@@ -23,7 +23,7 @@ export default function CreateProduct() {
 
 
   const inSubmit = async (data: any) => {
-    console.log(data)
+
 
     await createProduct(data)
   }
@@ -31,7 +31,7 @@ export default function CreateProduct() {
   async function createProduct(data: any) {
     await createOrderByApi(data)
       .then((response) => {
-        console.log(response);
+
         if (response.status !== 200) {
           setIsSuccess({
             state: true,

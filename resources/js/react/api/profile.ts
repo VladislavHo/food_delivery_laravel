@@ -16,10 +16,6 @@ export async function checkedAuthByApi(): Promise<any> {
       },
     });
 
-
-
-    console.log(response);
-
     if (!response.ok) {
       return { status: response.status, error: response.statusText };
     }
@@ -53,11 +49,6 @@ export async function getProfileByApi(): Promise<any> {
 
 
     const data = await response.json();
-
-    console.log(data);
-
-
-
 
     return { status: 200, data };
 

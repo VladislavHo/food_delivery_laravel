@@ -29,8 +29,6 @@ const FormRegister = observer(() => {
 
   const onSubmit = (data: IRegister) => {
     const { name, email, password, password_confirmation } = data;
-    console.log(data);
-
     getCheckLogin(name, email, password, password_confirmation);
 
 
@@ -40,8 +38,6 @@ const FormRegister = observer(() => {
   async function getCheckLogin(name: string, email: string, password: string, password_confirmation: string) {
     const checkLogin = await registerByApi({ name, email, password, password_confirmation });
 
-
-    console.log(checkLogin)
     if (checkLogin.status === 200) {
       navigate('/profile')
       sessionUserActions(true);

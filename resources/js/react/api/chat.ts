@@ -43,8 +43,6 @@ export async function getChatsByApi() {
 
 
 export async function createChatByApi({ friendId }: { friendId: number }) {
-console.log(friendId);
-
   try {
     await fetch('/sanctum/csrf-cookie');
 
@@ -59,14 +57,12 @@ console.log(friendId);
 
     }
     )
-    console.log(response);
     if (!response.ok) {
       throw new Error('Failed to fetch chat');
     }
 
     const data = await response.json();
 
-    console.log(data);
 
 
     return {
@@ -108,9 +104,7 @@ export async function sendMessagesByApi({ chatId, message }: { chatId: string, m
 
     const data = await response.json();
 
-    console.log(data, 'message from api files');
-    
-
+  
     return {
       data,
       error: null,
@@ -148,9 +142,6 @@ export async function getMessagesByApi({ chatId }: { chatId: string }) {
     }
 
     const data = await response.json();
-
-    console.log(data, 'in api files');
-
 
     return {
       data,

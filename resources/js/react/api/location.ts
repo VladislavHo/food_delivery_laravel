@@ -20,13 +20,6 @@ export async function createLocationByApi(
     house
   }: ILocation
 ): Promise<any> {
-  console.log(latitude,
-    longitude,
-    country,
-    city,
-    street,
-    house);
-
   try {
     await fetch('/sanctum/csrf-cookie');
     const response = await fetch('/api/location/create', {

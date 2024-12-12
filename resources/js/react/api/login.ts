@@ -5,11 +5,8 @@ import { ILogin, LoginResponse } from "../types/types";
 export default async function checkLoginByApi({ email, password, remember }: ILogin): Promise<LoginResponse> {
 
   try {
-    // Получение CSRF токена
+
     await fetch('/sanctum/csrf-cookie');
-
-
-    // Запрос на вход
     const response = await fetch(`/login?email=${email}&password=${password}&remember=${remember}`, {
       method: 'POST',
       headers: {
@@ -19,7 +16,7 @@ export default async function checkLoginByApi({ email, password, remember }: ILo
       },
     });
 
-    // Проверка ответа
+
     if (!response.ok) {
       return { status: response.status, error: 'Неверный логин или пароль' };
     }
@@ -27,10 +24,6 @@ export default async function checkLoginByApi({ email, password, remember }: ILo
     window.location.reload();
 
 
-    // const data = await response.json();
-
-    // console.log(data);
-    // console.log(data);
 
     return { status: 200 };
 

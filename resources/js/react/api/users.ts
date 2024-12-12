@@ -2,8 +2,7 @@ import { getCookie } from "../cookies";
 
 export async function getUserByApi({ id }: { id: string }): Promise<any> {
   await fetch('/sanctum/csrf-cookie');
-  console.log(id, 'id');
-  
+
   try {
     const response = await fetch(`/api/user/${id}`, {
       method: 'GET',
@@ -20,9 +19,6 @@ export async function getUserByApi({ id }: { id: string }): Promise<any> {
     }
 
     const data = await response.json()
-
-    console.log(data, 'api');
-
 
     return { status: 200, data }
   } catch (error) {

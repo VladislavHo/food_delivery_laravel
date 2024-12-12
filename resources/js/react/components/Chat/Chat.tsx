@@ -15,14 +15,10 @@ export default function Chat() {
     checkedAuth()
   }, [])
 
-console.log(chatData, "chatData");
-
-
   async function getChat() {
     await getChatsByApi()
       .then((data) => {
         setChatData(data.data.data)
-        console.log(data);
         
       })
   }

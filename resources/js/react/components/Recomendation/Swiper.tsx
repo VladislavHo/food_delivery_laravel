@@ -27,7 +27,7 @@ export default function Recomendation() {
       console.log(error)
     }
   }
-  console.log(recomendation, 'recomendation');
+
   
   return (
     <>

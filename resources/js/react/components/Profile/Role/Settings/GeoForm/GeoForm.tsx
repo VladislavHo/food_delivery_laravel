@@ -35,8 +35,6 @@ const GeoForm = observer(({ locationData }: any) => {
   async function getGeoData({ ...data }: IAddress) {
     const geo = await getGeoApi({ ...data })
 
-    console.log(geo.data);
-
     if (geo.status !== 200) {
       return navigate('/profile')
     }
@@ -48,8 +46,6 @@ const GeoForm = observer(({ locationData }: any) => {
    function handleSelectChange(e: React.ChangeEvent<HTMLSelectElement>) {
     const selectedValue = e.target.value;
 
-
-    console.log(selectedValue, 'selectedValue');
     const [latitude, longitude, country, city, street, house] = selectedValue.split(',');
 
 
@@ -61,7 +57,6 @@ const GeoForm = observer(({ locationData }: any) => {
   async function handleSubmitGeo() {
     await createLocationByApi(coordinates)
       .then((response) => {
-        console.log(response);
         setIsSuccess({
           state: true,
           success: true

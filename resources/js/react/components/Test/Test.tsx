@@ -13,7 +13,6 @@ export default function Test() {
   async function getProfile() {
     const user = await checkedAuthByApi();
     setUser(user);
-    // console.log(user);
 
   }
   return (

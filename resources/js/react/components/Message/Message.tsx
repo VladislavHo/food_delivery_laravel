@@ -9,8 +9,7 @@ import { getProfileByApi } from '../../api/profile';
 export default function Message() {
   const navigate = useNavigate();
   const { id } = useParams();
-  // const userId = JSON.parse(localStorage.getItem('id')!).id
-  // console.log(userId, 'User ID');
+
 
   const [messageValue, setMessageValue] = useState('');
   const [messages, setMessages] = useState<any[]>([]);
@@ -23,23 +22,12 @@ export default function Message() {
 
   async function getProfile() {
     const user = await getProfileByApi()
-    console.log(user, 'User ID');
-    
     if (user.status === 200) {
       setUserId(user.data.profile.user.id)
-
-
     } else {
-
       navigate('/cards');
-
     }
-
   }
-
-
-
-
 
   useEffect(() => {
     getAllMessages({ id: id! })
@@ -47,32 +35,19 @@ export default function Message() {
     channel.listen('MessageSent', (e: any) => {
       setMessages((prev) => prev.concat(e));
 
-
     })
-
-
-
 
     return () => {
       channel.unsubscribe();
     }
   }, [id])
 
-
-
-  console.log(messages, "MESSAGES");
-
-
-
-
-
-
   async function getAllMessages({ id }: { id: string }) {
 
     await getMessagesByApi({ chatId: id })
       .then((data) => {
         setMessages(data.data.data)
-        // console.log("answer servers", data);
+
 
       })
 
@@ -81,19 +56,13 @@ export default function Message() {
 
 
   async function buttonSubmitSendMessage({ id, message }: { id: string, message: string }) {
-    // setMessages((prev) => prev.concat({ message, sender: { id: 1 }, user_id: 1 }))
-    // console.log(id, message);
 
     await sendMessagesByApi({ chatId: id, message })
     setMessageValue("");
-
   }
-
   useEffect(() => {
-    // Прокрутка в самый низ при монтировании компонента
-    window.scrollTo(0, document.body.scrollHeight);
-    console.log(document.body.scrollHeight, "document.body.scrollHeight");
 
+    window.scrollTo(0, document.body.scrollHeight);
 
   }, [messages]);
 
@@ -127,12 +96,6 @@ export default function Message() {
           <div className="grid pb-8">
             {messages && messages.map((message: any, index: number) => {
               const sender_id = message.sender_id || null;
-              // const userId = message.user_id || null;
-
-
-
-              // console.log(sender.id, userId, 'sender');
-
               if (sender_id === userId) {
                 return (
                   <div key={index + keyId + message.message} className="flex gap-2.5 justify-end pb-10">

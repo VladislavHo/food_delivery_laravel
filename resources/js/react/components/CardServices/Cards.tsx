@@ -7,7 +7,7 @@ import Filter from './Filter/Filter'
 import Spinner from '../Spiner/Spiner'
 import Card from '../Card/Card'
 import { checkedAuthByApi } from '../../api/profile'
-export default function CardServices() {
+export default function Cards() {
   const navigate = useNavigate()
   const id = useId()
   const [foodsData, setFoodsData] = useState<any>([])
@@ -18,7 +18,6 @@ export default function CardServices() {
     r: 200,
     all: false,
   })
-  // const [isLodaing, setIsLodaing] = useState(true)
   useEffect(() => {
     getOrders()
     checkedAuth()
@@ -30,10 +29,7 @@ export default function CardServices() {
       .then((data) => {
         if (data.status !== 200) {
           setIsLoading(false)
-          // return navigate('/login')
         }
-
-
         setIsLoading(false)
       });
   }
@@ -51,35 +47,21 @@ export default function CardServices() {
         all: localStorage.getItem('filter') ? JSON.parse(localStorage.getItem('filter')!).all : valueFields.all && true,
       }).then((data) => {
         if (data.status !== 200) {
-           getFoodsByApi().then((data) => {
-            console.log(data.data, 'foods all data');
-            
+          getFoodsByApi().then((data) => {
             setFoodsData(data.data)
           })
         }
         setFoodsData(data.data)
-
       })
-
-      .finally(() => (setIsLoading(false)))
-
-      
-
-
-
-      
-
-
-
+        .finally(() => (setIsLoading(false)))
 
     } catch (error) {
       console.log(error, 'ERROR');
 
       setFoodsData([])
     }
-
   }
-  console.log(foodsData, 'foodsData!!!!');
+
   return (
 
     <>
@@ -122,8 +104,8 @@ export default function CardServices() {
 
                 <div className="">
                   {foodsData && foodsData.foods ? (
-                    foodsData.foods.map((food: any, index: number) => (
-                      <Card item={food} />
+                    foodsData.foods.map((food: any) => (
+                      <Card item={food} key={id} />
                     ))) : (
                     <li>Нет доступных продуктов</li>
                   )
@@ -131,31 +113,6 @@ export default function CardServices() {
                 </div>
               </div>
             </div>
-
-            {/* <span>{rangeValue}</span> */}
-
-            {/* <ul style={!!foodsData.foods && foodsData.foods.length > 2 ? { justifyContent: 'space-between' } : { justifyContent: 'flex-start' }}>
-        {isLoading ? <Spinner /> :
-
-          foodsData.foods ? (
-            foodsData.foods.map((food: any, index: number) => (
-              <li key={index}>
-                <a href={`/food?search=${food.id}`}>
-                  <img src="./images/food.jpg" alt="" />
-                  <div className="card-info--wrapper">
-                    <span>{food.title}</span>
-                    <div className="price">
-                      <span>Заказать</span>
-                    </div>
-                  </div>
-                </a>
-              </li>
-            ))
-          ) : (
-            <li>Нет доступных продуктов</li>
-          )
-        }
-      </ul> */}
           </div></>}
     </>
 

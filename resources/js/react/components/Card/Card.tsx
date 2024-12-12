@@ -1,11 +1,10 @@
-import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
-export default function Card({ item }: any) {
+export default function Card({ item, id }: any) {
   const navigate = useNavigate()
   return (
     <>
-      <article className="relative isolate flex flex-col justify-end overflow-hidden rounded-2xl px-8 pb-8 pt-40 max-w-sm mx-auto mt-3" onClick={() => navigate(`/food?search=${item.id}`)}>
+      <article key={id} className="relative isolate flex flex-col justify-end overflow-hidden rounded-2xl px-8 pb-8 pt-40 max-w-sm mx-auto mt-3" onClick={() => navigate(`/food?search=${item.id}`)}>
         <img
           src='/images/food.jpg'
           alt="University of Southern California"
